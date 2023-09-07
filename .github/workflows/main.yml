@@ -29,4 +29,5 @@ jobs:
     - name: Create Tunnel
       run: ./ngrok tcp 3389
       working-directory: /usr/local/bin/
-
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
