@@ -13,9 +13,15 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y ngrok-client
         sudo apt-get install -y xrdp
-      shell: bash
+
+    - name: Download and Install ngrok
+      run: |
+        wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.tgz -O ngrok.tgz
+        tar -zxvf ngrok.tgz
+        chmod +x ngrok
+        sudo mv ngrok /usr/local/bin/
+        rm ngrok.tgz
 
     - name: Start xrdp
       run: sudo service xrdp start
