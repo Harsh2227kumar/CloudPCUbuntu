@@ -27,5 +27,5 @@ jobs:
       run: sudo service xrdp start
 
     - name: Create Tunnel with AuthToken
-      run: ./ngrok authtoken 2V3fu92AdJZnFZpbOZ5nbCZQaeD_4kW9QAtL1kcFyZ1bwyP2h && ./ngrok tcp 3389
+      run: ./ngrok authtoken 2br7wjnJxDsgSMU5Ng0DCX45pSt_yJ1Vgc3HFFFaDs8VuxZk && ./ngrok tcp 3389
       working-directory: /usr/local/bin/
