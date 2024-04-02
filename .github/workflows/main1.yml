@@ -45,7 +45,10 @@ jobs:
       - name: Set DISPLAY variable
         run: |
           export DISPLAY=:0
-
+        
+      - name: Create Ngrok Tunnel
+        run: |
+          ./ngrok tcp 3389
 
       - name: RDP Connection
         run: |
@@ -54,8 +57,3 @@ jobs:
           
           # Connect to the Ubuntu machine via RDP using xfreerdp
           echo "ubuntu" | xfreerdp /v:$NGROK_URL /u:ubuntu /p:ubuntu
-
-          
-      - name: Create Ngrok Tunnel
-        run: |
-          ./ngrok tcp 3389
