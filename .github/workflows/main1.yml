@@ -32,10 +32,6 @@ jobs:
         run: |
           ./ngrok authtoken 2eY37krFhwW4MTdR9lKn5bUn2hn_6fq5kWUpzB4u5AjxsFSo3
 
-      - name: Create Ngrok Tunnel
-        run: |
-          ./ngrok tcp 3389
-
       - name: Display Ngrok URL
         run: |
           sleep 5  # Wait for Ngrok to initialize
@@ -48,3 +44,9 @@ jobs:
           
           # Connect to the Ubuntu machine via RDP using xfreerdp
           echo "ubuntu" | xfreerdp /v:$NGROK_URL /u:ubuntu /p:ubuntu
+
+
+      - name: Create Ngrok Tunnel
+        run: |
+          ./ngrok tcp 3389
+
