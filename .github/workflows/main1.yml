@@ -1,4 +1,4 @@
-name: Ubuntu-Xrdp-Ngrok
+name: Ubuntu-SSH-Ngrok
 
 on: [push, workflow_dispatch]
 
@@ -7,21 +7,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install Xrdp and Xfce Desktop
+      - name: Install OpenSSH Server
         run: |
           sudo apt update
-          sudo apt install -y xrdp xfce4 xfce4-goodies
-          sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
-          echo xfce4-session > ~/.xsession
+          sudo apt install -y openssh-server
 
-      - name: Start Xrdp Service
+      - name: Start SSH Service
         run: |
-          sudo systemctl start xrdp
-          sudo systemctl enable xrdp
+          sudo systemctl start ssh
+          sudo systemctl enable ssh
 
-      - name: Check Xrdp Service Status
+      - name: Check SSH Service Status
         run: |
-          sudo systemctl status xrdp
+          sudo systemctl status ssh
 
       - name: Download Ngrok
         run: |
@@ -32,28 +30,13 @@ jobs:
         run: |
           ./ngrok authtoken 2eY37krFhwW4MTdR9lKn5bUn2hn_6fq5kWUpzB4u5AjxsFSo3
 
-      - name: Display Ngrok URL
+      - name: Display Ngrok URL for SSH
         run: |
           sleep 5  # Wait for Ngrok to initialize
           curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
 
-      - name: Install xfreerdp
-        run: |
-          sudo apt update
-          sudo apt install -y freerdp2-x11
-
-      - name: Set DISPLAY variable
-        run: |
-          export DISPLAY=:0
-        
-      - name: Create Ngrok Tunnel
-        run: |
-          ./ngrok tcp 3389
-
-      - name: RDP Connection
-        run: |
-          # Get the Ngrok URL
-          NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
           
-          # Connect to the Ubuntu machine via RDP using xfreerdp
-          echo "ubuntu" | xfreerdp /v:$NGROK_URL /u:ubuntu /p:ubuntu
+      - name: Create Ngrok Tunnel for SSH
+        run: |
+          ./ngrok tcp 22
+
