@@ -31,20 +31,21 @@ jobs:
       - name: Update Ngrok to the Latest Version
         run: |
           ./ngrok update
-
-      - name: Start X11 Session and Display Manager
+          
+      - name: Start X11 Session
         run: |
-          startx & # Start X11 session in the background
+          sudo startx &
           sleep 5 # Wait for X11 session to start
-          sudo systemctl restart display-manager
-
-      - name: Wait for Display Manager to Start
-        run: sleep 10 # Adjust the sleep time as needed
 
       - name: RDP Connection
         run: |
           # RDP connection command
           echo "ubuntu" | xfreerdp /v:0.tcp.ngrok.io:14603 /u:ubuntu /p:ubuntu
+
+      - name: Stop X11 Session
+        run: |
+          sudo pkill X
+
 
       - name: Stop X11 Session and Display Manager
         run: |
