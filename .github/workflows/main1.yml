@@ -21,6 +21,17 @@ jobs:
         run: |
           sudo systemctl status ssh
 
+      - name: Create Ubuntu User
+        run: |
+          sudo adduser ubuntu
+          echo 'ubuntu:ubuntu' | sudo chpasswd
+
+      - name: Grant SSH Access
+        run: |
+          sudo sed -i '/^#PermitRootLogin/c\PermitRootLogin no' /etc/ssh/sshd_config
+          echo 'AllowUsers ubuntu' | sudo tee -a /etc/ssh/sshd_config
+          sudo systemctl restart ssh
+
       - name: Download Ngrok
         run: |
           wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
@@ -35,7 +46,6 @@ jobs:
           sleep 5  # Wait for Ngrok to initialize
           curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
 
-          
       - name: Create Ngrok Tunnel for SSH
         run: |
           ./ngrok tcp 22
