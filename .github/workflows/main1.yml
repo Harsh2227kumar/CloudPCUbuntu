@@ -26,7 +26,7 @@ jobs:
           
       - name: Authenticate Ngrok
         run: |
-          ./ngrok authtoken YOUR_NGROK_AUTH_TOKEN
+          ./ngrok authtoken 2eY37krFhwW4MTdR9lKn5bUn2hn_6fq5kWUpzB4u5AjxsFSo3
 
       - name: Create Ngrok Tunnel
         run: |
