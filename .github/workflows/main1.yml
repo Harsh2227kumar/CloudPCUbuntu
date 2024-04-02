@@ -13,10 +13,16 @@ jobs:
           sudo apt install -y xrdp xfce4 xfce4-goodies
           sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
           echo xfce4-session > ~/.xsession
+
       - name: Start Xrdp Service
         run: |
           sudo systemctl start xrdp
           sudo systemctl enable xrdp
+
+      - name: Check Xrdp Service Status
+        run: |
+          sudo systemctl status xrdp
+
       - name: Download Ngrok
         run: |
           wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
@@ -25,10 +31,20 @@ jobs:
       - name: Authenticate Ngrok
         run: |
           ./ngrok authtoken 2eY37krFhwW4MTdR9lKn5bUn2hn_6fq5kWUpzB4u5AjxsFSo3
+
       - name: Create Ngrok Tunnel
         run: |
           ./ngrok tcp 3389
+
       - name: Display Ngrok URL
         run: |
           sleep 5  # Wait for Ngrok to initialize
           curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+
+      - name: RDP Connection
+        run: |
+          # Get the Ngrok URL
+          NGROK_URL=$(curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+          
+          # Connect to the Ubuntu machine via RDP using xfreerdp
+          echo "ubuntu" | xfreerdp /v:$NGROK_URL /u:ubuntu /p:ubuntu
