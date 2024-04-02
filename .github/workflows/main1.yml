@@ -32,6 +32,11 @@ jobs:
         run: |
           ./ngrok update
           
+      - name: Install xfreerdp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y freerdp2-x11
+
       - name: Start X11 Session
         run: |
           sudo startx &
@@ -46,8 +51,3 @@ jobs:
         run: |
           sudo pkill X
 
-
-      - name: Stop X11 Session and Display Manager
-        run: |
-          sudo systemctl stop display-manager
-          pkill X
