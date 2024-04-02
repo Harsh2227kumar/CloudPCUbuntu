@@ -37,6 +37,11 @@ jobs:
           sleep 5  # Wait for Ngrok to initialize
           curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
 
+      - name: Install xfreerdp
+        run: |
+          sudo apt update
+          sudo apt install -y freerdp2-x11
+
       - name: RDP Connection
         run: |
           # Get the Ngrok URL
