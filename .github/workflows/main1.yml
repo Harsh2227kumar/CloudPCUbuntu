@@ -21,7 +21,7 @@ jobs:
 
       - name: Download Ngrok
         run: |
-          wget wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-s390x.tgz
+          wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-s390x.tgz
           unzip ngrok-v3-stable-linux-s390x.tgz
           
       - name: Authenticate Ngrok
