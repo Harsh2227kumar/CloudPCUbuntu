@@ -23,8 +23,8 @@ jobs:
 
       - name: Create Ubuntu User
         run: |
-          sudo adduser ubuntu
-          echo 'ubuntu:ubuntu' | sudo chpasswd
+          sudo adduser --disabled-password --gecos "" ubuntu
+          echo "ubuntu:ubuntu" | sudo chpasswd
 
       - name: Grant SSH Access
         run: |
