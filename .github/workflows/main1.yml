@@ -1,0 +1,39 @@
+name: Ubuntu-Xrdp-Ngrok
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Xrdp and Xfce Desktop
+        run: |
+          sudo apt update
+          sudo apt install -y xrdp xfce4 xfce4-goodies
+          sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config
+          echo xfce4-session > ~/.xsession
+
+      - name: Start Xrdp Service
+        run: |
+          sudo systemctl start xrdp
+          sudo systemctl enable xrdp
+
+      - name: Download Ngrok
+        run: |
+          wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip
+          unzip ngrok-stable-linux-amd64.zip
+          
+      - name: Authenticate Ngrok
+        run: |
+          ./ngrok authtoken YOUR_NGROK_AUTH_TOKEN
+
+      - name: Create Ngrok Tunnel
+        run: |
+          ./ngrok tcp 3389
+
+      - name: Display Ngrok URL
+        run: |
+          sleep 5  # Wait for Ngrok to initialize
+          curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url'
+
